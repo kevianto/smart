@@ -1,12 +1,9 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
-
 const Home = () => {
   return (
     <div>
-        <Sidebar/>
+      <h1>Welcome to AI Timetable</h1>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;  // ✅ Ensure this is present
