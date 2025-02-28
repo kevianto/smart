@@ -3,6 +3,9 @@ import Signin from "./pages/SignIn"
 import Signup from "./pages/Signup"
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import Courses from "./pages/Courses";
+import Venues from "./pages/Venues";
+import Timetable from "./pages/Timetable";
 
 function App() {
   
@@ -15,6 +18,11 @@ function App() {
                 <Route path="/" element={<Signin />} />
                 <Route path="/home" element={<Home/>} />
                 <Route path="/admin" element={<Admin/>} />
+                <Route path="/courses" element={<Courses/>} />
+                <Route path="/venues" element={<Venues/>} />
+                <Route path="/timetable" element={<Timetable/> }/>
+                
+                
                 
             </Routes>    
     </Router>

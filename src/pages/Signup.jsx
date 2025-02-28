@@ -7,10 +7,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    fullName: "", // 🔄 Changed from name to fullName
+    fullName: "",
     email: "",
     password: "",
-    password2: "", // 🔄 Changed from confirmPassword to password2
+    password2: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,6 @@ const Signup = () => {
     setLoading(true);
     setError("");
 
-    // ✅ Check if passwords match
     if (formData.password !== formData.password2) {
       setError("Passwords do not match.");
       setLoading(false);
@@ -35,9 +34,6 @@ const Signup = () => {
 
     try {
       const response = await fetch("https://smartdaro.up.railway.app/api/register", {
-
-
-        
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -46,13 +42,12 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registration successful! Redirecting to Sign In...");
-        navigate("/");
+        navigate("/"); // Redirects to the profile page after successful registration
       } else {
         setError(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
-      setError("Password should be more tham 6 character. Please try again later.");
+      setError("An error occurred. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -61,19 +56,19 @@ const Signup = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <div className="bg-white shadow-md rounded-lg overflow-hidden max-w-4xl w-full flex">
-        {/* Left Side */}
+        {/* Left Side - Image */}
         <div className="hidden md:flex w-1/2 justify-center items-center bg-gray-50">
           <img src={signupImage} alt="Signup Illustration" className="max-w-full" />
         </div>
 
-        {/* Right Side */}
+        {/* Right Side - Form */}
         <div className="w-full md:w-1/2 p-8 bg-gray-900 text-white">
           <h2 className="text-2xl font-bold text-yellow-500 mb-6">Create an Account</h2>
 
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Full Name Input */}
+            {/* Full Name */}
             <div className="relative">
               <input
                 type="text"
@@ -87,7 +82,7 @@ const Signup = () => {
               <FaUser className="absolute left-3 top-3 text-gray-400" />
             </div>
 
-            {/* Email Input */}
+            {/* Email */}
             <div className="relative">
               <input
                 type="email"
@@ -101,7 +96,7 @@ const Signup = () => {
               <FaEnvelope className="absolute left-3 top-3 text-gray-400" />
             </div>
 
-            {/* Password Input */}
+            {/* Password */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -121,7 +116,7 @@ const Signup = () => {
               </button>
             </div>
 
-            {/* Confirm Password Input */}
+            {/* Confirm Password */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}

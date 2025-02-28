@@ -1,107 +1,50 @@
-import { useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import backgroundImage from "@/assets/class.jpg";
+import Sidebar from "../components/Sidebar";
 
 const Admin = () => {
-  // State to store form inputs
-  const [unitName, setUnitName] = useState("");
-  const [lecturer, setLecturer] = useState("");
-  const [venue, setVenue] = useState("");
-  const [capacity, setCapacity] = useState("");
-
-  
-
-  // Function to send data to backend
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const timetableData = {
-      unitName,
-      lecturer,
-      venue,
-      capacity: parseInt(capacity), // Convert to number
-    };
-
-    try {
-      const response = await axios.post( `${REACT_APP_API_URL}/api/venues`, timetableData);
-      alert("Timetable details saved successfully!");
-      console.log(response.data);
-
-      // Clear form fields after submission
-      setUnitName("");
-      setLecturer("");
-      setVenue("");
-      setCapacity("");
-    } catch (error) {
-      console.error("Error saving timetable:", error);
-      alert("Failed to save timetable. Please try again.");
-    }
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Admin Panel</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Unit Name */}
-          <div>
-            <label className="block text-gray-700 font-medium">Unit Name</label>
-            <input
-              type="text"
-              value={unitName}
-              onChange={(e) => setUnitName(e.target.value)}
-              placeholder="Enter unit name"
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            />
-          </div>
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <Sidebar/>
 
-          {/* Lecturer */}
-          <div>
-            <label className="block text-gray-700 font-medium">Lecturer</label>
-            <input
-              type="text"
-              value={lecturer}
-              onChange={(e) => setLecturer(e.target.value)}
-              placeholder="Enter lecturer name"
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            />
-          </div>
+      {/* Main Admin Content */}
+      <div
+        className="flex-1 flex flex-col items-center justify-center bg-cover bg-center p-6"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
+        {/* Header */}
+        <header className="absolute top-0 left-64 w-[calc(100%-16rem)] bg-gray-900 text-white py-4 text-center text-3xl font-bold">
+          Smartdaro Admin Panel
+        </header>
 
-          {/* Venue */}
-          <div>
-            <label className="block text-gray-700 font-medium">Venue</label>
-            <input
-              type="text"
-              value={venue}
-              onChange={(e) => setVenue(e.target.value)}
-              placeholder="Enter venue"
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            />
-          </div>
+        {/* Page Content */}
+        <h2 className="text-4xl font-bold text-black bg-white bg-opacity-50 px-6 py-2 rounded-lg mt-16">
+          Manage Timetable Resources
+        </h2>
+        <p className="text-lg text-gray-900 bg-white bg-opacity-50 px-4 py-2 mt-4 rounded-lg">
+          Add and manage venues and courses required for the timetable generation.
+        </p>
 
-          {/* Capacity */}
-          <div>
-            <label className="block text-gray-700 font-medium">Capacity</label>
-            <input
-              type="number"
-              value={capacity}
-              onChange={(e) => setCapacity(e.target.value)}
-              placeholder="Enter venue capacity"
-              required
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            />
-          </div>
-
-          {/* Submit Button */}
+        {/* Buttons in a row */}
+        <div className="mt-6 flex space-x-6">
           <button
-            type="submit"
-            className="w-full bg-blue-500 text-white font-bold py-3 rounded-md hover:bg-blue-600"
+            onClick={() => navigate("/venues")}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg"
           >
-            Save Details
+            Add Venues
           </button>
-        </form>
+
+          <button
+            onClick={() => navigate("/courses")}
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg"
+          >
+            Add Courses
+          </button>
+        </div>
       </div>
     </div>
   );
