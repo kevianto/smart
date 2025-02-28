@@ -11,7 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
     return (
-        <AuthProvider>
+        <AuthProvider>uup
             <VenueProvider>
                 <Router>
                     <div className="p-6">

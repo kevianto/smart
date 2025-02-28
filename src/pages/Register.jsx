@@ -16,16 +16,22 @@ const Register = () => {
     setError("");
     setSuccess("");
 
+    if (!fullName || !email || !password || !password2) {
+      setError("All fields are required!");
+      return;
+    }
+
     if (password !== password2) {
       setError("Passwords do not match!");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/users/register", {
+      const response = await axios.post("https://smartdaro.up.railway.app/api/register", {
         fullName,
         email,
         password,
+        password2, // ✅ Now included
       });
 
       setSuccess(response.data.message);

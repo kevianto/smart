@@ -16,7 +16,7 @@ const Login = () => {
     setMessage({ type: "", text: "" });
 
     try {
-      const { data } = await axios.post("http://localhost:5000/api/users/login", formData);
+      const { data } = await axios.post("https://smartdaro.up.railway.app/api/login", formData);
       localStorage.setItem("token", data.token);
       setMessage({ type: "success", text: "Login successful! Redirecting..." });
 
