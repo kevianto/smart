@@ -74,4 +74,3 @@ const {
   run();
 
 
-  GEMINI_API_KEY=AIzaSyAOujVQ2SJvvgwjIKOocLVQJRu_N0p7YnY

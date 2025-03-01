@@ -14,7 +14,7 @@ const Timetable = () => {
         // const response = await fetch(genAI);
         // const data = await response.json();
         // setTimetable(data.timetable); 
-        const response = await axios.get("http://localhost:5000/api/timetable");
+        const response = await axios.get("http://mwalimusmarter/api/timetable");
         setTimetable(response.data.timetable);
       } catch (err) {
         setError("Failed to fetch timetable.");
