@@ -15,7 +15,7 @@ const Signin = () => {
     setError(null);
 
     try {
-      const response = await fetch("https://smartdaro.up.railway.app/api/login", {
+      const response = await fetch("https://mwalimusmarter.up.railway.app/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

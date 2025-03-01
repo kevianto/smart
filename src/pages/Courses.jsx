@@ -24,7 +24,7 @@ const Courses = () => {
     }
 
     try {
-      const response = await axios.post("https://smartdaro.up.railway.app/api/courses", {
+      const response = await axios.post("https://mwalimusmarter.up.railway.app/api/courses", {
         name,
         code,
         instructorId: instructor,

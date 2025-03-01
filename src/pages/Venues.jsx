@@ -9,31 +9,43 @@ const Venues = () => {
 
   const API_URL = "https://smartdaro.up.railway.app/api/venues"; // Adjust according to your backend
 
-  // Add Venue Function
   const handleAddVenue = async (e) => {
     e.preventDefault();
     setMessage("");
-
+  
     if (!venueName || !capacity) {
       setMessage("⚠️ Please enter both venue name and capacity.");
       return;
     }
-
-    const newVenue = { name: venueName, capacity };
-
+  
+    const adminToken = localStorage.getItem("token"); // Ensure admin is authenticated
+    const newVenue = { 
+      name: venueName, 
+      capacity: Number(capacity), 
+      isAvailable: true 
+    };
+  
     try {
       setLoading(true);
-      await axios.post(API_URL, newVenue);
+      const response = await axios.post(API_URL, newVenue, {
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+  
+      console.log(response.data); // Debugging: Check response
       setVenueName("");
       setCapacity("");
       setMessage("✅ Venue added successfully!");
     } catch (error) {
-      setMessage("❌ Failed to add venue.");
+      console.error("Error details:", error.response?.data || error.message);
+      setMessage(`❌ Failed: ${error.response?.data?.message || "Server error"}`);
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
       {/* Header */}

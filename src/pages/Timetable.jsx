@@ -9,7 +9,12 @@ const Timetable = () => {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await axios.get("https://smartdaro.up.railway.app/api/timetable");
+        // const apiKey = process.env.GEMINI_API_KEY;
+        // const genAI = new GoogleGenerativeAI(apiKey);
+        // const response = await fetch(genAI);
+        // const data = await response.json();
+        // setTimetable(data.timetable); 
+        const response = await axios.get("http://localhost:5000/api/timetable");
         setTimetable(response.data.timetable);
       } catch (err) {
         setError("Failed to fetch timetable.");
@@ -21,28 +26,8 @@ const Timetable = () => {
     fetchTimetable();
   }, []);
 
-  // Define table headers (Days from Monday to Friday)
+  // Define table headers for Monday to Friday
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-
-  // Define time slots (from 7:00 AM to 7:00 PM, 1-hour intervals)
-  const timeSlots = [
-    "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
-    "01:00", "02:00", "03:00", "04:00", "05:00", "06:00"
-  ];
-
-  // Function to check if a course starts at a given time
-  const findClass = (day, time) => {
-    return timetable.find(
-      (entry) => entry.day === day && entry.startTime === time
-    );
-  };
-
-  // Function to calculate rowspan (number of hours the class spans)
-  const getRowSpan = (startTime, endTime) => {
-    const startIdx = timeSlots.indexOf(startTime);
-    const endIdx = timeSlots.indexOf(endTime);
-    return Math.min(endIdx - startIdx, 3); // Max 3-hour class
-  };
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
@@ -52,7 +37,7 @@ const Timetable = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <div className="overflow-x-auto w-full max-w-6xl">
+        <div className="overflow-x-auto w-full max-w-4xl">
           <table className="min-w-full border border-gray-300 bg-white shadow-lg rounded-lg">
             <thead>
               <tr className="bg-blue-500 text-white">
@@ -63,31 +48,27 @@ const Timetable = () => {
               </tr>
             </thead>
             <tbody>
-              {timeSlots.map((timeSlot, index) => (
+              {/* Generating timetable slots */}
+              {["08:00 - 10:00", "10:00 - 12:00", "12:00 - 2:00", "2:00 - 4:00", "4:00 - 6:00"].map((timeSlot) => (
                 <tr key={timeSlot} className="border-t">
-                  <td className="p-3 font-semibold bg-gray-200">{timeSlot} - {timeSlots[index + 1] || "07:00"}</td>
-
+                  <td className="p-3 font-semibold bg-gray-200">{timeSlot}</td>
                   {days.map((day) => {
-                    const session = findClass(day, timeSlot);
-                    if (session) {
-                      const rowSpan = getRowSpan(session.startTime, session.endTime);
-                      return (
-                        <td key={day} className="p-3 text-center border bg-green-100" rowSpan={rowSpan}>
-                          <p className="font-semibold">{session.course}</p>
-                          <p className="text-sm text-gray-600">{session.venue}</p>
-                        </td>
-                      );
-                    }
-
-                    // Check if the current slot is inside a session's span
-                    const isInsideSpan = timetable.some(
-                      (entry) =>
-                        entry.day === day &&
-                        timeSlots.indexOf(entry.startTime) < index &&
-                        timeSlots.indexOf(entry.endTime) > index
+                    const session = timetable.find(
+                      (entry) => entry.day === day && entry.startTime === timeSlot.split(" - ")[0]
                     );
 
-                    return isInsideSpan ? null : <td key={day} className="p-3 text-center border">-</td>;
+                    return (
+                      <td key={day} className="p-3 text-center border">
+                        {session ? (
+                          <>
+                            <p className="font-semibold">{session.course}</p>
+                            <p className="text-sm text-gray-600">{session.venue}</p>
+                          </>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
+                      </td>
+                    );
                   })}
                 </tr>
               ))}
